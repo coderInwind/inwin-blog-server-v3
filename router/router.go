@@ -9,7 +9,9 @@ func NewRouter() *gin.Engine {
 
 	r := gin.New()
 
-	r.GET("/login", controller.Login)
+	r.POST("/login", controller.Login)
+
+	r.POST("/create", controller.CreateUser)
 
 	return r
 }
