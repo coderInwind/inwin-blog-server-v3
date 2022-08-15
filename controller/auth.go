@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"inwind-blog-server-v3/common"
 	"inwind-blog-server-v3/service"
@@ -18,7 +17,6 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	fmt.Printf("%v", loginParams)
 	service.Login(c)
 }
 

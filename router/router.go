@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"inwind-blog-server-v3/controller"
+	"inwind-blog-server-v3/middleware"
 )
 
 func NewRouter() *gin.Engine {
@@ -11,7 +12,7 @@ func NewRouter() *gin.Engine {
 
 	r.POST("/login", controller.Login)
 
-	r.POST("/create", controller.CreateUser)
+	r.POST("/create", middleware.Encrypt(), controller.CreateUser)
 
 	return r
 }

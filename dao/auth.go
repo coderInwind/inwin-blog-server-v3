@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"inwind-blog-server-v3/common"
 	"inwind-blog-server-v3/db"
@@ -19,6 +20,14 @@ func Login(c *gin.Context) {
 }
 
 func CreateUser(c *gin.Context, params common.UserParams) {
+
+	encryptedPassword, isExists := c.Get("password")
+	if isExists {
+		fmt.Printf("%v存在", encryptedPassword)
+	} else {
+		fmt.Printf("%v不存在", encryptedPassword)
+	}
+
 	user := model.User{
 		Username:  params.Username,
 		Password:  params.Password,
