@@ -7,12 +7,18 @@ import (
 )
 
 func NewRouter() *gin.Engine {
-
+	// 认证
 	r := gin.New()
-
-	r.POST("/login", controller.Login)
-
-	r.POST("/create", middleware.Encrypt(), controller.CreateUser)
+	auth := r.Group("/auth")
+	{
+		auth.POST("/login", controller.Login)
+	}
+	// 路由
+	user := r.Group("/user")
+	{
+		user.GET("/list", middleware.Encrypt(), controller.GetUserList)
+		user.POST("/create", middleware.Encrypt(), controller.CreateUser)
+	}
 
 	return r
 }
