@@ -2,14 +2,13 @@ package common
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 	"net/http"
 )
 
-func Response(c *gin.Context, httpStatus int, code int, data *gorm.DB, msg string) {
+func Response[T any](c *gin.Context, httpStatus int, code int, data T, msg string) {
 	c.JSON(httpStatus, gin.H{
 		"code": code,
-		"data": data.Value,
+		"data": data,
 		"msg":  msg,
 	})
 }

@@ -9,6 +9,6 @@ func main() {
 	db.NewDbEngine()
 
 	r := router.NewRouter()
-	r.Run(":8080")
+	r.Run(":4000")
 
 }

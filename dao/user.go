@@ -6,8 +6,6 @@ import (
 	"inwind-blog-server-v3/common"
 	"inwind-blog-server-v3/db"
 	"inwind-blog-server-v3/model"
-	"net/http"
-	"time"
 )
 
 func CreateUser(c *gin.Context, params common.UserParams) {
@@ -19,21 +17,24 @@ func CreateUser(c *gin.Context, params common.UserParams) {
 	}
 
 	user := model.User{
-		Username:  params.Username,
-		Password:  encryptedPassword.(string), //密码做加密处理
-		RoleId:    params.Role,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		Username: params.Username,
+		Password: encryptedPassword.(string), //密码做加密处理
+		RoleId:   params.Role,
 	}
 
 	db.DbEngine.Create(&user)
 	common.ResponseOk(c)
 }
 
-func GetUserList(c *gin.Context) {
-	var user []model.User
+func SelectUserList(s int, i int) ([]model.User, int64) {
 	// preload嵌套预加载 - 结构体中嵌套有结构体使用
-	result := db.DbEngine.Preload("Role").Find(&user)
-	fmt.Printf("%v", user)
-	common.Response(c, http.StatusOK, 200, result, "The request is successful")
+	var users []model.User
+	var user model.User
+	var total int64
+
+	fmt.Println(s, i)
+
+	db.DbEngine.Preload("Role").Limit(s).Offset((i - 1) * s).Find(&users)
+	db.DbEngine.Model(user).Count(&total)
+	return users, total
 }

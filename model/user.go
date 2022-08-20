@@ -1,19 +1,15 @@
 package model
 
-import "time"
-
 type Role struct {
-	Id    int `gorm:"primary_key"`
-	Role  string
-	Power int
+	BasicModel
+	Role  string `json:"role"`
+	Power int    `json:"power"`
 }
 
 type User struct {
-	Id        int `gorm:"primary_key"`
-	Username  string
-	Password  string
-	RoleId    int
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	Role      Role
+	BasicModel
+	Username string
+	Password string
+	RoleId   int
+	Role     Role `gorm:"ForeignKey:RoleId"`
 }

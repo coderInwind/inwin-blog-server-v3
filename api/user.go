@@ -1,4 +1,4 @@
-package controller
+package api
 
 import (
 	"github.com/gin-gonic/gin"
@@ -19,5 +19,14 @@ func CreateUser(c *gin.Context) {
 }
 
 func GetUserList(c *gin.Context) {
-	service.GetUserList(c)
+	// 获取参数
+	var userListParams service.UserListParams
+	//校验参数
+	if err := c.ShouldBind(&userListParams); err != nil {
+		c.JSON(200, ResponseError(err))
+	} else {
+		userList := userListParams.GetUserListService()
+		c.JSON(200, userList)
+	}
+
 }
