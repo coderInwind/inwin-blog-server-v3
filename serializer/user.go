@@ -10,9 +10,8 @@ type User struct {
 	Username  string    `json:"username"`
 	Password  string    `json:"password"`
 	Role      string    `json:"role"`
-	Power     int       `json:"power"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 func BuildUser(item model.User) User {
@@ -21,7 +20,6 @@ func BuildUser(item model.User) User {
 		Username:  item.Username,
 		Password:  item.Password,
 		Role:      item.Role.Role,
-		Power:     item.Role.Power,
 		CreatedAt: item.BasicModel.CreatedAt,
 		UpdatedAt: item.BasicModel.UpdatedAt,
 	}

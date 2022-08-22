@@ -1,10 +1,6 @@
 package model
 
-type Role struct {
-	BasicModel
-	Role  string `json:"role"`
-	Power int    `json:"power"`
-}
+import "golang.org/x/crypto/bcrypt"
 
 type User struct {
 	BasicModel
@@ -12,4 +8,14 @@ type User struct {
 	Password string
 	RoleId   int
 	Role     Role `gorm:"ForeignKey:RoleId"`
+}
+
+//加密密码
+func (u *User) EncryptPassword(password string) error {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 10) //加密的难度
+	if err != nil {
+		return err
+	}
+	u.Password = string(bytes)
+	return nil
 }

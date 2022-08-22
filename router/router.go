@@ -19,8 +19,14 @@ func NewRouter() *gin.Engine {
 	// 路由
 	user := r.Group("/user")
 	{
-		user.GET("/list", middleware.Encrypt(), api.GetUserList)
-		user.POST("/create", middleware.Encrypt(), api.CreateUser)
+		user.GET("/list", api.GetUserList)
+		user.POST("/create", api.CreateUser)
+	}
+
+	role := r.Group("/role")
+	{
+		role.GET("/list", api.GetRoleList)
+		role.GET("/options", api.GetRoleOptions)
 	}
 
 	return r
