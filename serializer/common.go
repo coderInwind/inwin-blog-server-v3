@@ -19,6 +19,12 @@ type DataList struct {
 	Total int64       `json:"total"`
 }
 
+//带有token的结构
+type TokenData struct {
+	Data  interface{}
+	Token string
+}
+
 //BulidListResponse 带有总数的列表构建器
 func BuildListResponse(items interface{}, total int64) Response {
 	return Response{

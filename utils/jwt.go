@@ -6,7 +6,7 @@ import (
 )
 
 type Claims struct {
-	Username string `json:"username"`
+	Id       uint   `json:"username"`
 	Password string `json:"password"`
 	//Authority int    `json:"authority"`
 	jwt.RegisteredClaims
@@ -14,10 +14,10 @@ type Claims struct {
 
 var jwtSecret = []byte("测试")
 
-func GenerateToken(username string, password string) (string, error) {
+func GenerateToken(id uint, password string) (string, error) {
 
 	claim := Claims{
-		Username: username,
+		Id:       id,
 		Password: password,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "inwind-blog",

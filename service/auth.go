@@ -1,17 +1,45 @@
 package service
 
 import (
-	"github.com/gin-gonic/gin"
-	"inwind-blog-server-v3/dao"
+	"fmt"
+	"inwind-blog-server-v3/db"
+	"inwind-blog-server-v3/model"
+	"inwind-blog-server-v3/serializer"
+	"inwind-blog-server-v3/utils"
 )
 
 // 逻辑（服务）层，一般是业务逻辑的入口，可以认为从这里开始，所有的请求参数一定是合法的。业务逻辑和业务流程也都在这一层中。
 
-type LoginParams struct {
+type LoginService struct {
 	Username string `form:"username" json:"username" binding:"required"`
 	Password string `form:"password" json:"password" binding:"required"`
 }
 
-func LoginService(c *gin.Context) {
-	dao.Login(c)
+func (l *LoginService) Login() serializer.Response {
+	var user model.User
+	// 验证用户名密码
+	if err := db.DbEngine.Where("username = ?", l.Username).First(&user).Error; err != nil {
+		fmt.Println("错误")
+	}
+
+	if err := user.CheckPassword(l.Password); err != nil {
+		fmt.Println("错误")
+	}
+
+	//颁发token
+	token, err := utils.GenerateToken(user.ID, l.Username)
+	if err != nil {
+		fmt.Println("错误")
+	}
+
+	return serializer.Response{
+		Code: 200,
+		Data: serializer.TokenData{
+			Data:  serializer.BuildLoginUser(user),
+			Token: token,
+		},
+		Msg: "成功",
+	}
+
+	//dao.Login(c)
 }

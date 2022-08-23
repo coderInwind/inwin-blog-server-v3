@@ -14,6 +14,12 @@ type User struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
+type LoginUser struct {
+	Id        uint
+	Username  string
+	CreatedAt time.Time
+}
+
 func BuildUser(item model.User) User {
 	return User{
 		Id:        item.ID,
@@ -26,11 +32,19 @@ func BuildUser(item model.User) User {
 }
 
 // 序列化用户
-
 func BuildUsers(items []model.User) (users []User) {
 	for _, item := range items {
 		user := BuildUser(item)
 		users = append(users, user)
 	}
 	return users
+}
+
+//登录的用户
+func BuildLoginUser(u model.User) LoginUser {
+	return LoginUser{
+		Id:        u.ID,
+		Username:  u.Username,
+		CreatedAt: u.CreatedAt,
+	}
 }

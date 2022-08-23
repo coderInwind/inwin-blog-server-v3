@@ -13,11 +13,11 @@ type UserListService struct {
 }
 
 type CreateUserService struct {
-	Username  string    `form:"username" json:"userName" binding:"required"`
-	Password  string    `form:"password" json:"passWord"  binding:"required"`
-	RoleId    int       `form:"roleId" json:"role_id"  binding:"required"`
-	CreatedAt time.Time `form:"createdAt" json:"created_at"`
-	UpdatedAt time.Time `form:"updatedAt" json:"updated_at"`
+	Username  string    `json:"username" binding:"required"`
+	Password  string    `json:"password"  binding:"required"`
+	RoleId    int       `json:"roleId"  binding:"required"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 func (c *CreateUserService) CreateUser() serializer.PromptResponse {
