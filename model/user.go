@@ -1,6 +1,9 @@
 package model
 
-import "golang.org/x/crypto/bcrypt"
+import (
+	"fmt"
+	"golang.org/x/crypto/bcrypt"
+)
 
 type User struct {
 	BasicModel
@@ -20,8 +23,9 @@ func (u *User) EncryptPassword(password string) error {
 	return nil
 }
 
-func (u *User) CheckPassword(p string) error {
+func (u *User) CheckPassword(p string) bool {
 
 	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(p))
-	return err
+	fmt.Println(err)
+	return err == nil
 }

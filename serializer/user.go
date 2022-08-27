@@ -15,9 +15,9 @@ type User struct {
 }
 
 type LoginUser struct {
-	Id        uint
-	Username  string
-	CreatedAt time.Time
+	Id        uint      `json:"id"`
+	Username  string    `json:"username"`
+	CreatedAt time.Time `json:"createdAt"`
 }
 
 func BuildUser(item model.User) User {

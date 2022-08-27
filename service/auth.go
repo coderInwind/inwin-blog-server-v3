@@ -22,8 +22,12 @@ func (l *LoginService) Login() serializer.Response {
 		fmt.Println("错误")
 	}
 
-	if err := user.CheckPassword(l.Password); err != nil {
-		fmt.Println("错误")
+	if !user.CheckPassword(l.Password) {
+		fmt.Println("密码错误")
+		return serializer.Response{
+			Code: utils.ErrorAuthCheckPasswordFail,
+			Msg:  utils.GetMsg(utils.ErrorAuthCheckPasswordFail),
+		}
 	}
 
 	//颁发token

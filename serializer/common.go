@@ -2,10 +2,9 @@ package serializer
 
 // Response 基础序列化器
 type Response struct {
-	Code  int         `json:"code"`
-	Data  interface{} `json:"data"`
-	Msg   string      `json:"msg"`
-	Error string      `json:"error"`
+	Code int         `json:"code"`
+	Data interface{} `json:"data"`
+	Msg  string      `json:"msg"`
 }
 
 // 基础的请求响应提示信息
@@ -21,8 +20,8 @@ type DataList struct {
 
 //带有token的结构
 type TokenData struct {
-	Data  interface{}
-	Token string
+	Data  interface{} `json:"data"`
+	Token string      `json:"token"`
 }
 
 //BulidListResponse 带有总数的列表构建器
