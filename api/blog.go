@@ -25,6 +25,6 @@ func GetBlogDetail(c *gin.Context) {
 		c.JSON(utils.ERROR, serializer.BuildErrorResponse(utils.InvalidParams, utils.GetMsg(utils.InvalidParams)))
 	} else {
 		result := blogDetailService.BlogDetailService()
+		c.JSON(utils.SUCCESS, result)
 	}
-
 }

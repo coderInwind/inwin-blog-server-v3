@@ -32,6 +32,7 @@ func NewRouter() *gin.Engine {
 	blog := r.Group("/blog")
 	{
 		blog.GET("/list", api.GetBlogList)
+		blog.POST("/detail", api.GetBlogDetail)
 	}
 
 	return r

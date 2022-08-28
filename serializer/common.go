@@ -36,7 +36,7 @@ func BuildListResponse(items interface{}, total int64) Response {
 	}
 }
 
-// 错误提示
+// 有总数的列表构建器错误提示
 func BuildListErrorResponse(code int, msg string) Response {
 	return Response{
 		Code: code,

@@ -25,9 +25,17 @@ func (b *BlogListSerivce) GetBlogList() serializer.Response {
 }
 
 type BlogDetail struct {
-	Id int64 `json:"id"`
+	Id int64 `form:"id" json:"id" binding:"required"`
 }
 
-func (b *BlogDetail) BlogDetailService() {
-	dao.SelectBlogDetail(b.Id)
+func (b *BlogDetail) BlogDetailService() serializer.Response {
+	blog, err := dao.SelectBlogDetail(b.Id)
+	if err != nil {
+		serializer.BuildErrorResponse(utils.ERROR, utils.GetMsg(utils.ERROR))
+	}
+	return serializer.Response{
+		Code: utils.SUCCESS,
+		Data: blog,
+		Msg:  utils.GetMsg(utils.SUCCESS),
+	}
 }

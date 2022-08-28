@@ -15,8 +15,6 @@ func SelectBlogList(s int, i int) ([]model.Blog, int64, error) {
 
 func SelectBlogDetail(id int64) (model.Blog, error) {
 	var blog model.Blog
-
-	resule := db.DbEngine.Where("name = ?", id).First(&blog)
-
-	return blog, resule.Error
+	result := db.DbEngine.Where("id = ?", id).First(&blog)
+	return blog, result.Error
 }
