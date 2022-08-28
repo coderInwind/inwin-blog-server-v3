@@ -29,5 +29,10 @@ func NewRouter() *gin.Engine {
 		role.GET("/options", api.GetRoleOptions)
 	}
 
+	blog := r.Group("/blog")
+	{
+		blog.GET("/list", api.GetBlogList)
+	}
+
 	return r
 }

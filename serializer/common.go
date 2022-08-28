@@ -37,6 +37,17 @@ func BuildListResponse(items interface{}, total int64) Response {
 }
 
 // 错误提示
+func BuildListErrorResponse(code int, msg string) Response {
+	return Response{
+		Code: code,
+		Data: DataList{
+			Total: 0,
+		},
+		Msg: msg,
+	}
+}
+
+// 错误提示
 func BuildErrorResponse(code int, msg string) PromptResponse {
 	return PromptResponse{Code: code, Msg: msg}
 }
