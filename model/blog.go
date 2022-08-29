@@ -5,7 +5,8 @@ type Blog struct {
 	Title    string `json:"title"`
 	Content  string `json:"content"`
 	Src      string `json:"src"`
-	Tag      string `json:"tag"`
+	TagId    int    `json:"tagId"`
+	Tag      Tag    `gorm:"ForeignKey:TagId"`
 	Overview string `json:"overview"`
 	Pv       int    `json:"pv"`
 	Like     int    `json:"like"`

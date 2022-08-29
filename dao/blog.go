@@ -8,7 +8,7 @@ import (
 func SelectBlogList(s int, i int) ([]model.Blog, int64, error) {
 	var blogs []model.Blog
 
-	result := db.DbEngine.Limit(s).Offset((i - 1) * s).Find(&blogs)
+	result := db.DbEngine.Preload("Tag").Limit(s).Offset((i - 1) * s).Find(&blogs)
 
 	return blogs, result.RowsAffected, result.Error
 }

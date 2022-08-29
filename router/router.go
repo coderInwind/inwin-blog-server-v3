@@ -35,5 +35,10 @@ func NewRouter() *gin.Engine {
 		blog.POST("/detail", api.GetBlogDetail)
 	}
 
+	tag := r.Group("/tag")
+	{
+		tag.GET("/list")
+	}
+
 	return r
 }

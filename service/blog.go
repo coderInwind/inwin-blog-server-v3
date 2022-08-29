@@ -21,7 +21,7 @@ func (b *BlogListSerivce) GetBlogList() serializer.Response {
 		return serializer.BuildListErrorResponse(utils.ERROR, utils.GetMsg(utils.ERROR))
 	}
 
-	return serializer.BuildListResponse(blogs, total)
+	return serializer.BuildListResponse(serializer.BuildBlogs(blogs), total)
 }
 
 type BlogDetail struct {
