@@ -1,7 +1,7 @@
 package serializer
 
 import (
-	"inwind-blog-server-v3/model"
+	"inwind-blog-server-v3/interner/model"
 	"time"
 )
 

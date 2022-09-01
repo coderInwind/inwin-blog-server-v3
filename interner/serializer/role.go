@@ -1,6 +1,8 @@
 package serializer
 
-import "inwind-blog-server-v3/model"
+import (
+	"inwind-blog-server-v3/interner/model"
+)
 
 type RoleOption struct {
 	Role  string `json:"role"`

@@ -1,12 +1,12 @@
 package main
 
 import (
-	"inwind-blog-server-v3/db"
-	"inwind-blog-server-v3/router"
+	"inwind-blog-server-v3/global"
+	"inwind-blog-server-v3/interner/router"
 )
 
 func main() {
-	db.NewDbEngine()
+	global.NewDbEngine()
 
 	//测试
 

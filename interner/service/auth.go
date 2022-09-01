@@ -2,9 +2,9 @@ package service
 
 import (
 	"fmt"
-	"inwind-blog-server-v3/db"
-	"inwind-blog-server-v3/model"
-	"inwind-blog-server-v3/serializer"
+	"inwind-blog-server-v3/global"
+	"inwind-blog-server-v3/interner/model"
+	serializer2 "inwind-blog-server-v3/interner/serializer"
 	"inwind-blog-server-v3/utils"
 )
 
@@ -15,16 +15,16 @@ type LoginService struct {
 	Password string `form:"password" json:"password" binding:"required"`
 }
 
-func (l *LoginService) Login() serializer.Response {
+func (l *LoginService) Login() serializer2.Response {
 	var user model.User
 	// 验证用户名密码
-	if err := db.DbEngine.Where("username = ?", l.Username).First(&user).Error; err != nil {
+	if err := global.DbEngine.Where("username = ?", l.Username).First(&user).Error; err != nil {
 		fmt.Println("错误")
 	}
 
 	if !user.CheckPassword(l.Password) {
 		fmt.Println("密码错误")
-		return serializer.Response{
+		return serializer2.Response{
 			Code: utils.ErrorAuthCheckPasswordFail,
 			Msg:  utils.GetMsg(utils.ErrorAuthCheckPasswordFail),
 		}
@@ -36,10 +36,10 @@ func (l *LoginService) Login() serializer.Response {
 		fmt.Println("错误")
 	}
 
-	return serializer.Response{
+	return serializer2.Response{
 		Code: 200,
-		Data: serializer.TokenData{
-			Data:  serializer.BuildLoginUser(user),
+		Data: serializer2.TokenData{
+			Data:  serializer2.BuildLoginUser(user),
 			Token: token,
 		},
 		Msg: "成功",

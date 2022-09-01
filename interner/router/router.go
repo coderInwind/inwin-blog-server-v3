@@ -2,8 +2,8 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"inwind-blog-server-v3/api"
-	"inwind-blog-server-v3/middleware"
+	"inwind-blog-server-v3/interner/middleware"
+	"inwind-blog-server-v3/interner/router/api"
 )
 
 func NewRouter() *gin.Engine {
@@ -33,11 +33,12 @@ func NewRouter() *gin.Engine {
 	{
 		blog.GET("/list", api.GetBlogList)
 		blog.POST("/detail", api.GetBlogDetail)
+		blog.POST("/update", api.EditBlog)
 	}
 
 	tag := r.Group("/tag")
 	{
-		tag.GET("/list")
+		tag.GET("/list", api.GetTagList)
 	}
 
 	return r

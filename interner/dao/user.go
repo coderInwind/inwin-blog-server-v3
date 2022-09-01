@@ -2,8 +2,8 @@ package dao
 
 import (
 	"gorm.io/gorm"
-	"inwind-blog-server-v3/db"
-	"inwind-blog-server-v3/model"
+	"inwind-blog-server-v3/global"
+	"inwind-blog-server-v3/interner/model"
 )
 
 type CreateUserDao struct {
@@ -18,12 +18,12 @@ func SelectUserList(s int, i int) ([]model.User, int64) {
 	var user model.User
 	var total int64
 
-	db.DbEngine.Preload("Role").Limit(s).Offset((i - 1) * s).Find(&users)
-	db.DbEngine.Model(user).Count(&total)
+	global.DbEngine.Preload("Role").Limit(s).Offset((i - 1) * s).Find(&users)
+	global.DbEngine.Model(user).Count(&total)
 	return users, total
 }
 
 func CreateUser(user model.User) *gorm.DB {
-	result := db.DbEngine.Create(&user)
+	result := global.DbEngine.Create(&user)
 	return result
 }

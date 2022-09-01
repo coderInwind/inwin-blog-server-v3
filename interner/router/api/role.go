@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"inwind-blog-server-v3/service"
+	"inwind-blog-server-v3/interner/service"
 )
 
 func GetRoleList(c *gin.Context) {

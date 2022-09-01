@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"inwind-blog-server-v3/serializer"
-	"inwind-blog-server-v3/service"
+	"inwind-blog-server-v3/interner/serializer"
+	"inwind-blog-server-v3/interner/service"
 	"inwind-blog-server-v3/utils"
 )
 
