@@ -18,6 +18,14 @@ type Blog struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
+func BuildBlogs(list []model.Blog) (blogs []Blog) {
+	for _, item := range list {
+		blog := BuildBlog(item)
+		blogs = append(blogs, blog)
+	}
+	return blogs
+}
+
 func BuildBlog(item model.Blog) Blog {
 	return Blog{
 		Id:        item.ID,
@@ -31,12 +39,4 @@ func BuildBlog(item model.Blog) Blog {
 		CreatedAt: item.BasicModel.CreatedAt,
 		UpdatedAt: item.BasicModel.UpdatedAt,
 	}
-}
-
-func BuildBlogs(items []model.Blog) (blogs []Blog) {
-	for _, item := range items {
-		blog := BuildBlog(item)
-		blogs = append(blogs, blog)
-	}
-	return blogs
 }

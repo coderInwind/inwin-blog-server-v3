@@ -2,15 +2,13 @@ package main
 
 import (
 	"inwind-blog-server-v3/global"
-	"inwind-blog-server-v3/interner/router"
+	"inwind-blog-server-v3/initialize"
 )
 
 func main() {
-	global.NewDbEngine()
+	global.DB = initialize.Gorm()
 
-	//测试
+	r := initialize.Routers()
 
-	r := router.NewRouter()
 	r.Run(":4000")
-
 }
