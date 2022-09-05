@@ -12,7 +12,7 @@ import (
 type BlogApi struct{}
 
 func (b *BlogApi) GetBlogList(c *gin.Context) {
-	var params request.PageInfo
+	var params request.PageRequest
 	res := response.NewResponse(c)
 	//校验入参
 	if err := c.ShouldBind(&params); err != nil {
@@ -20,6 +20,29 @@ func (b *BlogApi) GetBlogList(c *gin.Context) {
 		return
 	}
 
-	list := service.ServiceGroupApp.GetBlogList(params)
-	res.OkWithList(serializer.BuildBlogs(list))
+	list, total, err := service.ServiceGroupApp.GetBlogList(params)
+	//查询
+	if err != nil {
+		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
+		return
+	}
+	res.OkWithList(serializer.BuildBlogs(list), total)
+}
+
+func (b *BlogApi) GetBlogDetail(c *gin.Context) {
+	var params request.DetailRequest
+	res := response.NewResponse(c)
+
+	if err := c.ShouldBind(&params); err != nil {
+		res.FailWithMsg(errcode.InvalidParams.WithDetail(err.Error()))
+		return
+	}
+
+	detail, err := service.ServiceGroupApp.GetBlogDetail(params)
+	if err != nil {
+		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
+		return
+	}
+
+	res.OkWithData(serializer.BuildBlog(detail))
 }
