@@ -14,6 +14,8 @@ func Routers() *gin.Engine {
 	publicGroup := r.Group("/api")
 	{
 		router.InitBlogRouter(publicGroup)
+		router.InitUserRouter(publicGroup)
+		router.InitTagRouter(publicGroup)
 	}
 
 	return r

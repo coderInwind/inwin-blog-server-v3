@@ -2,6 +2,8 @@ package api
 
 type ApiGroup struct {
 	BlogApi
+	UserApi
+	TagApi
 }
 
-var ApiGroupApp = ApiGroup{}
+var ApiGroupApp = new(ApiGroup)

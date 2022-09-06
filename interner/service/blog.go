@@ -4,21 +4,20 @@ import (
 	"inwind-blog-server-v3/common/request"
 	"inwind-blog-server-v3/global"
 	"inwind-blog-server-v3/interner/model"
+	"inwind-blog-server-v3/utils/dto"
 )
 
 type BlogService struct{}
 
-func (b *BlogService) GetBlogList(params request.PageRequest) ([]model.Blog, int64, error) {
-	var blogs []model.Blog
-	var total int64
-	var size, index = params.PageSize, params.PageIndex
-	err := global.DB.Preload("Tag").Limit(size).Offset((index - 1) * size).Find(&blogs).Count(&total).Error
+func (b *BlogService) GetBlogList(params request.PageRequest) (blogs []model.Blog, total int64, err error) {
+
+	var pageSize, pageIndex = params.PageSize, params.PageIndex
+	err = global.DB.Preload("Tag").Scopes(dto.Paginate(pageIndex, pageSize)).Find(&blogs).Count(&total).Error
 	return blogs, total, err
 }
 
-func (b *BlogService) GetBlogDetail(params request.DetailRequest) (model.Blog, error) {
-	var blog model.Blog
+func (b *BlogService) GetBlogDetail(params request.DetailRequest) (blog model.Blog, err error) {
 	var id = params.Id
-	err := global.DB.Where("id = ?", id).First(&blog).Error
+	err = global.DB.Where("id = ?", id).First(&blog).Error
 	return blog, err
 }

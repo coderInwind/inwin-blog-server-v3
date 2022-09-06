@@ -5,8 +5,6 @@ import (
 	"inwind-blog-server-v3/interner/api"
 )
 
-type blogRouter struct{}
-
 func InitBlogRouter(router *gin.RouterGroup) {
 	blogRouter := router.Group("/blog")
 	blogApi := api.BlogApi{}
