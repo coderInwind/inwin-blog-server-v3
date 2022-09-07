@@ -27,3 +27,23 @@ func (UserApi) GetUserList(c *gin.Context) {
 
 	res.OkWithList(serializer.BuildUsers(list), total)
 }
+
+//登录
+func (UserApi) Login(c *gin.Context) {
+	params := request.LoginRequest{}
+	res := response.NewResponse(c)
+
+	if err := c.ShouldBind(&params); err != nil {
+		res.FailWithMsg(errcode.InvalidParams.WithDetail(err.Error()))
+		return
+	}
+
+	user, token, err := service.ServiceGroupApp.UserService.Login(params)
+
+	if err != nil {
+		res.FailWithMsg(errcode.UsernameOrPasswordError.WithDetail(err.Error()))
+		return
+	}
+
+	res.OkWithData(serializer.BuildLogin(user, token))
+}

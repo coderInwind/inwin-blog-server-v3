@@ -14,6 +14,11 @@ type User struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
+type Login struct {
+	Username string `json:"username"`
+	Token    string `json:"token"`
+}
+
 func BuildUser(item model.User) User {
 	return User{
 		Id:        item.ID,
@@ -31,4 +36,11 @@ func BuildUsers(list []model.User) (users []User) {
 		users = append(users, user)
 	}
 	return users
+}
+
+func BuildLogin(user *model.User, token string) Login {
+	return Login{
+		Username: user.Username,
+		Token:    token,
+	}
 }
