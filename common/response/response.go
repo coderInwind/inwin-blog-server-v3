@@ -50,6 +50,13 @@ func (r *Response) OkWithList(data any, total int64) {
 	})
 }
 
+func (r *Response) OkWithMsg() {
+	r.ctx.JSON(http.StatusOK, CommonResponse{
+		Code: 0,
+		Msg:  "operate successfully!",
+	})
+}
+
 func (r *Response) FailWithMsg(err *errcode.Error) {
 	r.ctx.JSON(err.StatusCode(), ErrorResponse{
 		Code:   err.GetCode(),

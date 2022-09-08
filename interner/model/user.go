@@ -2,8 +2,8 @@ package model
 
 type User struct {
 	BasicModel
-	Username string
-	Password string
-	RoleId   int
-	Role     Role `gorm:"ForeignKey:RoleId"`
+	Username string `form:"username"`
+	Password string `form:"password"`
+	RoleId   int    `form:"roleId"`
+	Role     Role   `gorm:"ForeignKey:RoleId"`
 }

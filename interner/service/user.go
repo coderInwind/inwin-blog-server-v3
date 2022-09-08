@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"fmt"
+	"gorm.io/gorm"
 	"inwind-blog-server-v3/common/request"
 	"inwind-blog-server-v3/global"
 	"inwind-blog-server-v3/interner/model"
@@ -30,8 +31,8 @@ func (UserService) Login(params request.LoginRequest) (*model.User, string, erro
 	if err != nil {
 		return nil, "", err
 	}
-
-	if password != user.Password {
+	// 将密码和数据库加密了的密码进行比对
+	if utils.BcryptCheck(password, user.Password) {
 		return nil, "", errors.New("the user name or password is incorrect")
 	}
 
@@ -42,4 +43,22 @@ func (UserService) Login(params request.LoginRequest) (*model.User, string, erro
 	}
 
 	return user, token, nil
+}
+
+func (UserService) CreateUser(u model.User) error {
+	user := model.User{}
+	// 先查询是否有此用户名
+	if !errors.Is(global.DB.Where("username = ?", u.Username).First(&user).Error, gorm.ErrRecordNotFound) {
+		return errors.New("this user name already exists")
+	}
+
+	//加密
+	u.Password = utils.BcryptHash(u.Password)
+
+	// 创建失败
+	if err := global.DB.Create(&u).Error; err != nil {
+		return err
+	}
+
+	return nil
 }

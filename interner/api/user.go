@@ -6,6 +6,7 @@ import (
 	"inwind-blog-server-v3/common/request"
 	"inwind-blog-server-v3/common/response"
 	"inwind-blog-server-v3/common/serializer"
+	"inwind-blog-server-v3/interner/model"
 	"inwind-blog-server-v3/interner/service"
 )
 
@@ -28,11 +29,11 @@ func (UserApi) GetUserList(c *gin.Context) {
 	res.OkWithList(serializer.BuildUsers(list), total)
 }
 
-//登录
+// Login 登录
 func (UserApi) Login(c *gin.Context) {
 	params := request.LoginRequest{}
 	res := response.NewResponse(c)
-
+	// 校验参数
 	if err := c.ShouldBind(&params); err != nil {
 		res.FailWithMsg(errcode.InvalidParams.WithDetail(err.Error()))
 		return
@@ -46,4 +47,22 @@ func (UserApi) Login(c *gin.Context) {
 	}
 
 	res.OkWithData(serializer.BuildLogin(user, token))
+}
+
+func (UserApi) CreateUser(c *gin.Context) {
+	user := model.User{}
+	res := response.NewResponse(c)
+
+	// 校验参数
+	if err := c.ShouldBind(&user); err != nil {
+		res.FailWithMsg(errcode.InvalidParams.WithDetail(err.Error()))
+		return
+	}
+
+	if err := service.ServiceGroupApp.CreateUser(user); err != nil {
+		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
+		return
+	}
+
+	res.OkWithMsg()
 }
