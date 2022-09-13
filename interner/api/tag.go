@@ -13,7 +13,7 @@ type TagApi struct {
 
 func (TagApi) GetTagList(c *gin.Context) {
 	res := response.NewResponse(c)
-	params := request.PageRequest{}
+	params := request.AllowEmptyPageRequest{}
 	if err := c.ShouldBind(&params); err != nil {
 		res.FailWithMsg(errcode.InvalidParams.WithDetail(err.Error()))
 		return

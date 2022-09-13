@@ -5,6 +5,11 @@ type PageRequest struct {
 	PageIndex int `form:"pageIndex" json:"pageIndex" binding:"required"`
 }
 
-type DetailRequest struct {
+type AllowEmptyPageRequest struct {
+	PageSize  int `form:"pageSize"  json:"pageSize"`
+	PageIndex int `form:"pageIndex" json:"pageIndex"`
+}
+
+type SelectBlogRequest struct {
 	Id int `form:"id"  json:"id" binding:"required"`
 }

@@ -10,9 +10,9 @@ import (
 type TagService struct {
 }
 
-func (TagService) GetTagList(params request.PageRequest) (list []model.Tag, total int64, err error) {
+func (TagService) GetTagList(params request.AllowEmptyPageRequest) (list []model.Tag, total int64, err error) {
 	pageSize, pageIndex := params.PageSize, params.PageIndex
 
-	err = global.DB.Scopes(dto.Paginate(pageIndex, pageSize)).Find(&list).Count(&total).Error
+	err = global.DB.Scopes(dto.Paginate(pageIndex, pageSize)).Find(&list).Limit(-1).Offset(-1).Count(&total).Error
 	return list, total, err
 }

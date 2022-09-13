@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"fmt"
 	"gorm.io/gorm"
 	"inwind-blog-server-v3/common/request"
 	"inwind-blog-server-v3/global"
@@ -17,27 +16,31 @@ func (UserService) GetUserList(params request.PageRequest) (users []model.User, 
 
 	pageIndex, pageSize := params.PageIndex, params.PageSize
 
-	err = global.DB.Scopes(dto.Paginate(pageIndex, pageSize)).Find(&users).Count(&total).Error
+	err = global.DB.Scopes(dto.Paginate(pageIndex, pageSize)).Find(&users).Limit(-1).Offset(-1).Count(&total).Error
 
 	return users, total, err
 }
 
 func (UserService) Login(params request.LoginRequest) (*model.User, string, error) {
 	username, password := params.Username, params.Password
-	fmt.Println(username, password)
+
 	user := &model.User{}
 	err := global.DB.Where("username = ?", username).First(&user).Error
 
 	if err != nil {
 		return nil, "", err
 	}
+
 	// 将密码和数据库加密了的密码进行比对
-	if utils.BcryptCheck(password, user.Password) {
+	if ok := utils.BcryptCheck(password, user.Password); !ok {
 		return nil, "", errors.New("the user name or password is incorrect")
 	}
 
+	// 生成token
 	jwt := utils.NewJWT()
-	token, err := jwt.GenerateToken(user.ID, username)
+	Claims := jwt.CreateClaims(user.ID, username)
+	token, err := jwt.GenerateToken(Claims)
+
 	if err != nil {
 		return nil, "", errors.New("token generation error")
 	}

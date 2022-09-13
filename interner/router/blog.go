@@ -11,5 +11,8 @@ func InitBlogRouter(router *gin.RouterGroup) {
 	{
 		blogRouter.GET("/list", blogApi.GetBlogList)
 		blogRouter.POST("/detail", blogApi.GetBlogDetail)
+		blogRouter.POST("/edit", blogApi.EditBlog)
+		blogRouter.POST("/create", blogApi.CreateBlog)
+		blogRouter.POST("/delete", blogApi.DeleteBlog)
 	}
 }

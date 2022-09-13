@@ -16,10 +16,8 @@ type CommonResponse struct {
 	Msg  string      `json:"msg"`
 }
 
-type ListResponse struct {
-	Code  int         `json:"code"`
-	Data  interface{} `json:"data"`
-	Msg   string      `json:"msg"`
+type ListData struct {
+	List  interface{} `json:"list"`
 	Total int64       `json:"total"`
 }
 
@@ -33,6 +31,13 @@ func NewResponse(c *gin.Context) *Response {
 	return &Response{ctx: c}
 }
 
+func (r *Response) Ok() {
+	r.ctx.JSON(http.StatusOK, gin.H{
+		"code": 0,
+		"msg":  "operate successfully!",
+	})
+}
+
 func (r *Response) OkWithData(data any) {
 	r.ctx.JSON(http.StatusOK, CommonResponse{
 		Code: 0,
@@ -42,11 +47,13 @@ func (r *Response) OkWithData(data any) {
 }
 
 func (r *Response) OkWithList(data any, total int64) {
-	r.ctx.JSON(http.StatusOK, ListResponse{
-		Code:  0,
-		Data:  data,
-		Msg:   "operate successfully!",
-		Total: total,
+	r.ctx.JSON(http.StatusOK, CommonResponse{
+		Code: 0,
+		Data: ListData{
+			List:  data,
+			Total: total,
+		},
+		Msg: "operate successfully!",
 	})
 }
 
