@@ -5,6 +5,7 @@ type ApiGroup struct {
 	UserApi
 	TagApi
 	GalleryApi
+	UploadApi
 }
 
 var ApiGroupApp = new(ApiGroup)

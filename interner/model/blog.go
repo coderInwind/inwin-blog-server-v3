@@ -9,4 +9,6 @@ type Blog struct {
 	Overview string `form:"overview" json:"overview"`
 	Pv       int    `form:"pv" json:"pv"`
 	Like     int    `form:"like" json:"like"`
+
+	Hidden int `json:"hidden"`
 }

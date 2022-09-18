@@ -24,6 +24,7 @@ func Routers() *gin.Engine {
 		router.InitBlogRouter(PrivateGroup)
 		router.InitUserRouter(PrivateGroup)
 		router.InitTagRouter(PrivateGroup)
+		router.InitGalleryRouter(PrivateGroup)
 		router.InitUploadRouter(PrivateGroup)
 	}
 

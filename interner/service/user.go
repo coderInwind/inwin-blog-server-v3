@@ -16,7 +16,7 @@ func (UserService) GetUserList(params request.PageRequest) (users []model.User, 
 
 	pageIndex, pageSize := params.PageIndex, params.PageSize
 
-	err = global.DB.Scopes(dto.Paginate(pageIndex, pageSize)).Find(&users).Limit(-1).Offset(-1).Count(&total).Error
+	err = global.DB.Scopes(dto.Paginate(pageIndex, pageSize)).Preload("Role").Find(&users).Limit(-1).Offset(-1).Count(&total).Error
 
 	return users, total, err
 }

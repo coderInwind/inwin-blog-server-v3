@@ -13,7 +13,7 @@ func (b *BlogService) GetBlogList(params request.PageRequest) (blogs []model.Blo
 
 	var pageSize, pageIndex = params.PageSize, params.PageIndex
 	// limit -1 offset -1 表示查询总的条数
-	err = global.DB.Order("id desc").Scopes(dto.Paginate(pageIndex, pageSize)).Find(&blogs).Limit(-1).Offset(-1).Count(&total).Error
+	err = global.DB.Order("id desc").Scopes(dto.Paginate(pageIndex, pageSize)).Where("hidden = ?", 0).Find(&blogs).Limit(-1).Offset(-1).Count(&total).Error
 
 	return blogs, total, err
 }

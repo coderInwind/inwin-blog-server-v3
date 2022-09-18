@@ -1,9 +1,14 @@
 package router
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"inwind-blog-server-v3/interner/api"
+)
 
 func InitUploadRouter(router *gin.RouterGroup) {
 	uploadRouter := router.Group("/upload")
-
-	uploadRouter.GET("/token")
+	uploadApi := api.UploadApi{}
+	{
+		uploadRouter.GET("/token", uploadApi.GetUploadUrl)
+	}
 }
