@@ -6,6 +6,7 @@ type ServiceGroup struct {
 	TagService
 	GalleryService
 	UploadService
+	CoverService
 }
 
 var ServiceGroupApp = new(ServiceGroup)

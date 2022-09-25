@@ -13,7 +13,7 @@ func (b *BlogService) GetBlogList(params request.PageRequest) (blogs []model.Blo
 
 	var pageSize, pageIndex = params.PageSize, params.PageIndex
 	// limit -1 offset -1 表示查询总的条数
-	err = global.DB.Order("id desc").Scopes(dto.Paginate(pageIndex, pageSize)).Where("hidden = ?", 0).Find(&blogs).Limit(-1).Offset(-1).Count(&total).Error
+	err = global.DB.Order("id desc").Scopes(dto.Paginate(pageIndex, pageSize)).Preload("Tag").Where("hidden = ?", 0).Find(&blogs).Limit(-1).Offset(-1).Count(&total).Error
 
 	return blogs, total, err
 }
@@ -37,10 +37,12 @@ func (b *BlogService) CreateBlog(params request.CreateBlog) error {
 		Title:      params.Title,
 		Content:    params.Content,
 		Src:        params.Src,
-		TagId:      params.TagId,
-		Overview:   params.Overview,
-		Pv:         0,
-		Like:       0,
+		Tag: model.Tag{
+			Id: params.TagId,
+		},
+		Overview: params.Overview,
+		Pv:       0,
+		Like:     0,
 	}
 	err := global.DB.Create(&blog).Error
 

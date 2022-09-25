@@ -5,6 +5,7 @@ import (
 	"inwind-blog-server-v3/common/errcode"
 	"inwind-blog-server-v3/common/request"
 	"inwind-blog-server-v3/common/response"
+	"inwind-blog-server-v3/common/serializer"
 	"inwind-blog-server-v3/interner/model"
 	"inwind-blog-server-v3/interner/service"
 )
@@ -26,9 +27,29 @@ func (b *BlogApi) GetBlogList(c *gin.Context) {
 		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
 		return
 	}
-	res.OkWithList(list, total)
+	res.OkWithList(serializer.BuildBlogs(list), total)
 
 }
+
+//后台接口
+//func (b *BlogApi) GetBlogDataList(c *gin.Context) {
+//	var params request.PageRequest
+//	res := response.NewResponse(c)
+//	//校验入参
+//	if err := c.ShouldBind(&params); err != nil {
+//		res.FailWithMsg(errcode.InvalidParams.WithDetail(err.Error()))
+//		return
+//	}
+//
+//	list, total, err := service.ServiceGroupApp.GetBlogDataList(params)
+//	//查询
+//	if err != nil {
+//		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
+//		return
+//	}
+//	res.OkWithList(list, total)
+//
+//}
 
 func (b *BlogApi) GetBlogDetail(c *gin.Context) {
 	var params request.SelectBlogRequest
@@ -93,6 +114,6 @@ func (b *BlogApi) DeleteBlog(c *gin.Context) {
 		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
 		return
 	}
-	
+
 	res.Ok()
 }
