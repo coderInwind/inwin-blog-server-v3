@@ -31,26 +31,6 @@ func (b *BlogApi) GetBlogList(c *gin.Context) {
 
 }
 
-//后台接口
-//func (b *BlogApi) GetBlogDataList(c *gin.Context) {
-//	var params request.PageRequest
-//	res := response.NewResponse(c)
-//	//校验入参
-//	if err := c.ShouldBind(&params); err != nil {
-//		res.FailWithMsg(errcode.InvalidParams.WithDetail(err.Error()))
-//		return
-//	}
-//
-//	list, total, err := service.ServiceGroupApp.GetBlogDataList(params)
-//	//查询
-//	if err != nil {
-//		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
-//		return
-//	}
-//	res.OkWithList(list, total)
-//
-//}
-
 func (b *BlogApi) GetBlogDetail(c *gin.Context) {
 	var params request.SelectBlogRequest
 	res := response.NewResponse(c)
