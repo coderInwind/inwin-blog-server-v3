@@ -20,7 +20,7 @@ func (b *BlogService) GetBlogList(params request.PageRequest) (blogs []model.Blo
 
 func (b *BlogService) GetBlogDetail(params request.SelectBlogRequest) (blog model.Blog, err error) {
 	var id = params.Id
-	err = global.DB.Where("id = ?", id).First(&blog).Error
+	err = global.DB.Where("id = ?", id).Preload("Tag").First(&blog).Error
 	return blog, err
 }
 

@@ -46,7 +46,7 @@ func (b *BlogApi) GetBlogDetail(c *gin.Context) {
 		return
 	}
 
-	res.OkWithData(detail)
+	res.OkWithData(serializer.BuildBlog(detail))
 }
 
 func (b *BlogApi) EditBlog(c *gin.Context) {
