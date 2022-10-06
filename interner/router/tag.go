@@ -10,5 +10,6 @@ func InitTagRouter(router *gin.RouterGroup) {
 	var tagApi api.TagApi
 	{
 		tagRouter.GET("/list", tagApi.GetTagList)
+		tagRouter.POST("/edit", tagApi.EditTag)
 	}
 }

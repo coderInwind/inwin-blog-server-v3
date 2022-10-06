@@ -21,10 +21,25 @@ func (TagApi) GetTagList(c *gin.Context) {
 
 	list, total, err := service.ServiceGroupApp.TagService.GetTagList(params)
 
-	if err = c.ShouldBind(&params); err != nil {
+	if err != nil {
 		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
 		return
 	}
 
 	res.OkWithList(list, total)
+}
+
+func (TagApi) EditTag(c *gin.Context) {
+	res := response.NewResponse(c)
+	params := request.EditTag{}
+	if err := c.ShouldBind(&params); err != nil {
+		res.FailWithMsg(errcode.InvalidParams.WithDetail(err.Error()))
+		return
+	}
+
+	if err := service.ServiceGroupApp.TagService.EditTag(params); err != nil {
+		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
+		return
+	}
+	res.Ok()
 }

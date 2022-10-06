@@ -11,5 +11,5 @@ type AllowEmptyPageRequest struct {
 }
 
 type SelectBlogRequest struct {
-	Id int `form:"id"  json:"id" binding:"required"`
+	Id uint `form:"id"  json:"id" binding:"required"`
 }

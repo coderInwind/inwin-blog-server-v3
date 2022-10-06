@@ -5,8 +5,6 @@ import (
 	"inwind-blog-server-v3/common/errcode"
 	"inwind-blog-server-v3/common/request"
 	"inwind-blog-server-v3/common/response"
-	"inwind-blog-server-v3/common/serializer"
-	"inwind-blog-server-v3/interner/model"
 	"inwind-blog-server-v3/interner/service"
 )
 
@@ -27,8 +25,8 @@ func (b *BlogApi) GetBlogList(c *gin.Context) {
 		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
 		return
 	}
-	res.OkWithList(serializer.BuildBlogs(list), total)
-
+	//res.OkWithList(serializer.BuildBlogs(list), total)
+	res.OkWithList(list, total)
 }
 
 func (b *BlogApi) GetBlogDetail(c *gin.Context) {
@@ -46,11 +44,12 @@ func (b *BlogApi) GetBlogDetail(c *gin.Context) {
 		return
 	}
 
-	res.OkWithData(serializer.BuildBlog(detail))
+	//res.OkWithData(serializer.BuildBlog(detail))
+	res.OkWithData(detail)
 }
 
 func (b *BlogApi) EditBlog(c *gin.Context) {
-	var params *model.Blog
+	var params *request.Blog
 	res := response.NewResponse(c)
 
 	if err := c.ShouldBind(&params); err != nil {

@@ -18,7 +18,7 @@ type Claims struct {
 
 func NewJWT() *JWT {
 	return &JWT{
-		SigningKey: []byte("测试"),
+		SigningKey: []byte("inwind"),
 	}
 }
 

@@ -19,7 +19,8 @@ func Routers() *gin.Engine {
 
 	//需要鉴权的路由
 	PrivateGroup := r.Group("/api")
-	//PrivateGroup.Use(middleware.JWTAuth())
+	PrivateGroup.Use(middleware.JWTAuth())
+
 	{
 		router.InitBlogRouter(PrivateGroup)
 		router.InitUserRouter(PrivateGroup)

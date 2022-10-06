@@ -20,9 +20,8 @@ func JWTAuth() gin.HandlerFunc {
 
 		//解析校验
 		jwt := utils.NewJWT()
-
 		claims := jwt.ParseToken(token)
-		fmt.Println(claims.RegisteredClaims.ExpiresAt)
+		fmt.Println(claims)
 
 		c.Next()
 	}
