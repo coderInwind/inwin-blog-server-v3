@@ -22,3 +22,15 @@ func (*TagService) EditTag(params request.EditTag) error {
 	err := global.DB.Model(&model.Tag{}).Where("id = ?", &params.Id).Updates(&params).Error
 	return err
 }
+
+func (*TagService) CreateTag(params request.CreateTag) error {
+	err := global.DB.Create(&model.Tag{Name: params.Name}).Error
+
+	return err
+}
+
+func (*TagService) DeleteTag(params request.DeleteTag) error {
+	err := global.DB.Delete(&model.Tag{Id: params.Id}).Error
+
+	return err
+}

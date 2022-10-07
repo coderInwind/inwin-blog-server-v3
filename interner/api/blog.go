@@ -49,7 +49,7 @@ func (b *BlogApi) GetBlogDetail(c *gin.Context) {
 }
 
 func (b *BlogApi) EditBlog(c *gin.Context) {
-	var params *request.Blog
+	var params request.EditBlog
 	res := response.NewResponse(c)
 
 	if err := c.ShouldBind(&params); err != nil {

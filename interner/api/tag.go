@@ -43,3 +43,34 @@ func (TagApi) EditTag(c *gin.Context) {
 	}
 	res.Ok()
 }
+
+func (TagApi) CreateTag(c *gin.Context) {
+	res := response.NewResponse(c)
+	params := request.CreateTag{}
+
+	if err := c.ShouldBind(&params); err != nil {
+		res.FailWithMsg(errcode.InvalidParams.WithDetail(err.Error()))
+		return
+	}
+
+	if err := service.ServiceGroupApp.TagService.CreateTag(params); err != nil {
+		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
+		return
+	}
+	res.Ok()
+}
+
+func (TagApi) DeleteTag(c *gin.Context) {
+	res := response.NewResponse(c)
+	params := request.DeleteTag{}
+
+	if err := c.ShouldBind(&params); err != nil {
+		res.FailWithMsg(errcode.InvalidParams.WithDetail(err.Error()))
+	}
+
+	if err := service.ServiceGroupApp.DeleteTag(params); err != nil {
+		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
+	}
+
+	res.Ok()
+}

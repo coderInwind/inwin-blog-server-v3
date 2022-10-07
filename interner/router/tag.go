@@ -11,5 +11,7 @@ func InitTagRouter(router *gin.RouterGroup) {
 	{
 		tagRouter.GET("/list", tagApi.GetTagList)
 		tagRouter.POST("/edit", tagApi.EditTag)
+		tagRouter.POST("/create", tagApi.CreateTag)
+		tagRouter.POST("/delete", tagApi.DeleteTag)
 	}
 }

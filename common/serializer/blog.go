@@ -39,7 +39,7 @@ import (
 //	}
 //}
 
-func BuildBlogParams(params request.CreateBlog) model.Blog {
+func BuildCreateBlogParams(params request.CreateBlog) model.Blog {
 	var tagsSlice []model.Tag
 
 	for _, value := range params.Tags {
@@ -52,5 +52,26 @@ func BuildBlogParams(params request.CreateBlog) model.Blog {
 		Src:      params.Src,
 		Tags:     tagsSlice,
 		Overview: params.Overview,
+	}
+}
+
+func BuildEditBlogParams(params request.EditBlog, allTags []model.Tag) model.Blog {
+	var tagsSlice []model.Tag
+
+	for _, value1 := range allTags {
+		for _, value2 := range params.Tags {
+			if value1.Id == value2 {
+				tagsSlice = append(tagsSlice, model.Tag{Id: value2, Name: value1.Name})
+			}
+		}
+	}
+
+	return model.Blog{
+		BasicModel: model.BasicModel{ID: params.Id},
+		Title:      params.Title,
+		Content:    params.Content,
+		Src:        params.Src,
+		Tags:       tagsSlice,
+		Overview:   params.Overview,
 	}
 }

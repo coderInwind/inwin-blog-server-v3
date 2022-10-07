@@ -1,6 +1,7 @@
 package service
 
 import (
+	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"inwind-blog-server-v3/common/request"
 	"inwind-blog-server-v3/common/serializer"
@@ -26,15 +27,21 @@ func (b *BlogService) GetBlogDetail(params request.SelectBlogRequest) (blog mode
 	return blog, err
 }
 
-func (b *BlogService) EditBlog(params *request.Blog) error {
+func (b *BlogService) EditBlog(params request.EditBlog) error {
+	//查询所有标签
 
-	err := global.DB.Model(&params).Where("id=?", &params.Id).Updates(&params).Error
+	var allTag []model.Tag
+	global.DB.Find(&allTag)
+
+	// 关联模式 的更新
+	newParams := serializer.BuildEditBlogParams(params, allTag)
+	err := global.DB.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&newParams).Error
 
 	return err
 }
 
 func (b *BlogService) CreateBlog(params request.CreateBlog) error {
-	newParams := serializer.BuildBlogParams(params)
+	newParams := serializer.BuildCreateBlogParams(params)
 	err := global.DB.Create(&newParams).Error
 
 	return err
