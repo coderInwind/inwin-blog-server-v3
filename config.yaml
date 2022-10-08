@@ -1,0 +1,11 @@
+mysql:
+  host: '127.0.0.1'
+  port: '3306'
+  config: 'charset=utf8mb4&parseTime=True&loc=Local'
+  db-name: 'inwind_blog'
+  username: 'root'
+  password: 'mysql'
+  max-idle-conns: 10
+  max-open-conns: 100
+  log-mode: ""
+  log-zap: false

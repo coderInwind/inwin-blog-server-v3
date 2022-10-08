@@ -6,8 +6,8 @@ import (
 )
 
 func main() {
-	global.DB = initialize.Gorm()
 	global.Viper = initialize.Viper()
+	global.DB = initialize.Gorm()
 	r := initialize.Routers()
 
 	r.Run(":4000")
