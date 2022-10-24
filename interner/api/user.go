@@ -60,7 +60,7 @@ func (UserApi) CreateUser(c *gin.Context) {
 	}
 
 	if err := service.ServiceGroupApp.CreateUser(user); err != nil {
-		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
+		res.FailWithMsg(errcode.UsernameOrPasswordError.WithDetail(err.Error()))
 		return
 	}
 

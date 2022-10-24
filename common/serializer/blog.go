@@ -47,11 +47,12 @@ func BuildCreateBlogParams(params request.CreateBlog) model.Blog {
 	}
 
 	return model.Blog{
-		Title:    params.Title,
-		Content:  params.Content,
-		Src:      params.Src,
-		Tags:     tagsSlice,
-		Overview: params.Overview,
+		BasicModel: model.BasicModel{Id: params.Id},
+		Title:      params.Title,
+		Content:    params.Content,
+		Src:        params.Src,
+		Tags:       tagsSlice,
+		Overview:   params.Overview,
 	}
 }
 

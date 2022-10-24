@@ -6,4 +6,5 @@ type User struct {
 	Password string `form:"password"`
 	RoleId   int    `form:"roleId"`
 	Role     Role   `gorm:"ForeignKey:RoleId"`
+	Author   string `form:"author"`
 }

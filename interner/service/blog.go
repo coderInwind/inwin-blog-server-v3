@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"gorm.io/gorm/clause"
 	"inwind-blog-server-v3/common/request"
 	"inwind-blog-server-v3/common/serializer"
@@ -30,27 +29,40 @@ func (b *BlogService) GetBlogDetail(params request.SelectBlogRequest) (blog mode
 func (b *BlogService) EditBlog(params request.EditBlog) error {
 	//查询所有标签
 
-	//// 关联模式 的更新
-	var tag model.Tag
+	//查传入数组的相应标签
+	var tags []model.Tag
+	global.DB.Find(&tags, params.Tags)
+
 	var blog model.Blog
-	global.DB.Find(&blog, params.Id)
+	global.DB.Find(&blog, params.Id).Updates(&model.Blog{
+		BasicModel: model.BasicModel{
+			Id: params.Id,
+		},
+		Title:    params.Title,
+		Content:  params.Content,
+		Src:      params.Src,
+		Overview: params.Overview,
+		Hidden:   params.Hidden,
+	})
 
 	//替换关联
 	// 先查后关联
-	global.DB.Model(&blog).Association("Tags").Find(&tag)
-	fmt.Println(tag)
+	global.DB.Model(&blog).Association("Tags").Clear()
+	global.DB.Model(&blog).Association("Tags").Replace(&tags)
+
+	//
 
 	return nil
 }
 
-func (b *BlogService) CreateBlog(params request.CreateBlog) error {
+func (b *BlogService) CreateBlog(params request.CreateBlog) (uint, error) {
 	newParams := serializer.BuildCreateBlogParams(params)
-	err := global.DB.Create(&newParams).Error
-
-	return err
+	res := global.DB.Create(&newParams)
+	// 返回id
+	return newParams.Id, res.Error
 }
 
 func (b *BlogService) DeleteBlog(id uint) error {
-	err := global.DB.Select(clause.Associations).Delete(&model.Blog{BasicModel: model.BasicModel{ID: id}}).Error
+	err := global.DB.Select(clause.Associations).Delete(&model.Blog{BasicModel: model.BasicModel{Id: id}}).Error
 	return err
 }

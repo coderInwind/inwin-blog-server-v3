@@ -14,10 +14,11 @@ type Qiniu struct {
 
 func NewQiniu() *Qiniu {
 	return &Qiniu{
-		AccessKey:  "ui_qeUFkfc-hqgdLpS43ImTd3maOiloStVNGH4yV",
-		SecretKey:  "QTpvj74GxuHB3_A5cx0wZ4QYJa_w-W4ieIdAcXl_",
-		Bucket:     "inwind-blog",
-		ReturnBody: `{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)"`,
+		AccessKey: "ui_qeUFkfc-hqgdLpS43ImTd3maOiloStVNGH4yV",
+		SecretKey: "QTpvj74GxuHB3_A5cx0wZ4QYJa_w-W4ieIdAcXl_",
+		Bucket:    "inwind-blog",
+		//ReturnBody: `{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)"`,
+		ReturnBody: "$(key)",
 	}
 }
 

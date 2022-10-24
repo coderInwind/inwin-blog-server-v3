@@ -13,7 +13,6 @@ func Gorm() *gorm.DB {
 	//dsn := "root:mysql@tcp(127.0.0.1:3306)/inwind_blog?charset=utf8mb4&parseTime=True&loc=Local"
 	mc := global.Config.Mysql
 	dsn := mc.Username + ":" + mc.Password + "@tcp(" + mc.Host + ")/" + mc.Dbname + "?" + mc.Config
-	fmt.Println(global.Config)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{Logger: logger.Default.LogMode(logger.Info)})
 
 	if err != nil {

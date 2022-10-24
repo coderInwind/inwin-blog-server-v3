@@ -21,7 +21,7 @@ type Login struct {
 
 func BuildUser(item model.User) User {
 	return User{
-		Id:        item.ID,
+		Id:        item.Id,
 		Username:  item.Username,
 		Password:  item.Password,
 		Role:      item.Role.Role,

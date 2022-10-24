@@ -73,12 +73,13 @@ func (b *BlogApi) CreateBlog(c *gin.Context) {
 		return
 	}
 
-	if err := service.ServiceGroupApp.CreateBlog(params); err != nil {
+	id, err := service.ServiceGroupApp.CreateBlog(params)
+	if err != nil {
 		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
 		return
 	}
-
-	res.Ok()
+	
+	res.OkWithData(id)
 }
 
 func (b *BlogApi) DeleteBlog(c *gin.Context) {

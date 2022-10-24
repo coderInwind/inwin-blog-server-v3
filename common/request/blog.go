@@ -7,11 +7,13 @@ type EditBlog struct {
 	Src      string `form:"src" json:"src" binding:"required"`
 	Tags     []uint `form:"tags" json:"tags" binding:"required"`
 	Overview string `form:"overview" json:"overview" binding:"required"`
+	Hidden   int    `from:"hidden" json:"hidden"`
 }
 
 type CreateBlog struct {
+	Id       uint   `form:"id" json:"id"`
 	Title    string `form:"title" json:"title" binding:"required"`
-	Content  string `form:"content" json:"content" binding:"required"`
+	Content  string `form:"content" json:"content"`
 	Src      string `form:"src" json:"src" binding:"required"`
 	Tags     []uint `form:"tags" json:"tags" binding:"required"`
 	Overview string `form:"overview" json:"overview" binding:"required"`

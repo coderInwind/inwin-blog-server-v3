@@ -41,6 +41,9 @@ func (e *Error) StatusCode() int {
 		return http.StatusInternalServerError
 	case InvalidParams.GetCode():
 		return http.StatusBadRequest
+	case UsernameOrPasswordError.GetCode():
+		return http.StatusUnauthorized
+		//鉴权操作
 	case UnauthorizedAuthNotExist.GetCode():
 		fallthrough
 	case UnauthorizedTokenError.GetCode():
@@ -49,8 +52,6 @@ func (e *Error) StatusCode() int {
 		fallthrough
 	case UnauthorizedTokenTimeout.GetCode():
 		return http.StatusUnauthorized
-		//case TooManyRequests.GetCode():
-		//	return http.StatusTooManyRequests
 	}
 
 	return http.StatusInternalServerError

@@ -22,9 +22,9 @@ type ListData struct {
 }
 
 type ErrorResponse struct {
-	Code   int
-	Msg    string
-	Detail string
+	Code   int    `json:"code"`
+	Msg    string `json:"msg"`
+	Detail string `json:"detail"`
 }
 
 func NewResponse(c *gin.Context) *Response {

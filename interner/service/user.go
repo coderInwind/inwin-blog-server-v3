@@ -1,7 +1,9 @@
 package service
 
 import (
+	"context"
 	"errors"
+	"fmt"
 	"gorm.io/gorm"
 	"inwind-blog-server-v3/common/request"
 	"inwind-blog-server-v3/global"
@@ -38,12 +40,16 @@ func (UserService) Login(params request.LoginRequest) (*model.User, string, erro
 
 	// 生成token
 	jwt := utils.NewJWT()
-	Claims := jwt.CreateClaims(user.ID, username)
+	Claims := jwt.CreateClaims(user.Id, username)
 	token, err := jwt.GenerateToken(Claims)
-
 	if err != nil {
 		return nil, "", errors.New("token generation error")
 	}
+
+	// 存入redis
+	global.Redis.Set(context.Background(), username, token, 1231311111).Err()
+	res, err := global.Redis.Get(context.Background(), "userName").Result()
+	fmt.Println(123123, res, err)
 
 	return user, token, nil
 }
