@@ -1,7 +1,6 @@
 package service
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"gorm.io/gorm"
@@ -47,11 +46,17 @@ func (UserService) Login(params request.LoginRequest) (*model.User, string, erro
 	}
 
 	// 存入redis
-	global.Redis.Set(context.Background(), username, token, 1231311111).Err()
-	res, err := global.Redis.Get(context.Background(), "userName").Result()
-	fmt.Println(123123, res, err)
+	if err := utils.SetRedisJwt(token, username); err != nil {
+		return nil, "", errors.New(" 设置登录状态失败! ")
+	}
 
 	return user, token, nil
+}
+
+func (UserService) Logout() {
+
+	// 删除redis中token
+	fmt.Println("退出登录了")
 }
 
 func (UserService) CreateUser(u model.User) error {

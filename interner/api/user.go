@@ -49,6 +49,13 @@ func (UserApi) Login(c *gin.Context) {
 	res.OkWithData(serializer.BuildLogin(user, token))
 }
 
+func (UserApi) Logout(c *gin.Context) {
+	res := response.NewResponse(c)
+	service.ServiceGroupApp.UserService.Logout()
+
+	res.OkWithMsg()
+}
+
 func (UserApi) CreateUser(c *gin.Context) {
 	user := model.User{}
 	res := response.NewResponse(c)
