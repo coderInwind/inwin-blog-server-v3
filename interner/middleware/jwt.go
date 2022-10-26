@@ -5,6 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"inwind-blog-server-v3/common/errcode"
 	"inwind-blog-server-v3/common/response"
+	"inwind-blog-server-v3/global"
+	"inwind-blog-server-v3/interner/model"
 	"inwind-blog-server-v3/utils"
 )
 
@@ -21,8 +23,14 @@ func JWTAuth() gin.HandlerFunc {
 		//解析校验
 		jwt := utils.NewJWT()
 		claims := jwt.ParseToken(token)
-		fmt.Println(claims)
 
+		// 将用户信息传入上下文
+		c.Set("claims", claims)
+
+		//查询用户的权限等级
+		user := model.User{}
+		global.DB.Preload("Role").Find(&user)
+		fmt.Println(user)
 		c.Next()
 	}
 

@@ -3,7 +3,6 @@ package service
 import (
 	"gorm.io/gorm/clause"
 	"inwind-blog-server-v3/common/request"
-	"inwind-blog-server-v3/common/serializer"
 	"inwind-blog-server-v3/global"
 	"inwind-blog-server-v3/interner/model"
 	"inwind-blog-server-v3/utils/dto"
@@ -55,11 +54,11 @@ func (b *BlogService) EditBlog(params request.EditBlog) error {
 	return nil
 }
 
-func (b *BlogService) CreateBlog(params request.CreateBlog) (uint, error) {
-	newParams := serializer.BuildCreateBlogParams(params)
-	res := global.DB.Create(&newParams)
+func (b *BlogService) CreateBlog(blog model.Blog) (uint, error) {
+
+	res := global.DB.Create(&blog)
 	// 返回id
-	return newParams.Id, res.Error
+	return blog.Id, res.Error
 }
 
 func (b *BlogService) DeleteBlog(id uint) error {

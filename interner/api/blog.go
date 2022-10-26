@@ -5,7 +5,9 @@ import (
 	"inwind-blog-server-v3/common/errcode"
 	"inwind-blog-server-v3/common/request"
 	"inwind-blog-server-v3/common/response"
+	"inwind-blog-server-v3/common/serializer"
 	"inwind-blog-server-v3/interner/service"
+	"inwind-blog-server-v3/utils"
 )
 
 type BlogApi struct{}
@@ -25,7 +27,7 @@ func (b *BlogApi) GetBlogList(c *gin.Context) {
 		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
 		return
 	}
-	//res.OkWithList(serializer.BuildBlogs(list), total)
+
 	res.OkWithList(list, total)
 }
 
@@ -73,12 +75,22 @@ func (b *BlogApi) CreateBlog(c *gin.Context) {
 		return
 	}
 
-	id, err := service.ServiceGroupApp.CreateBlog(params)
+	//取出当前用户的信息，将blog.author赋值为username
+	claims, exists := c.Get("claims")
+	if !exists {
+		res.FailWithMsg(errcode.ServerError)
+	}
+	id := claims.(*utils.Claims).Id
+
+	// 序列化参数
+	clearedParams := serializer.BuildCreateBlogParams(params, id)
+
+	id, err := service.ServiceGroupApp.CreateBlog(clearedParams)
 	if err != nil {
 		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
 		return
 	}
-	
+
 	res.OkWithData(id)
 }
 

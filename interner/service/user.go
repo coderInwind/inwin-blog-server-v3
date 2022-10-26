@@ -45,10 +45,12 @@ func (UserService) Login(params request.LoginRequest) (*model.User, string, erro
 		return nil, "", errors.New("token generation error")
 	}
 
-	// 存入redis
+	// 将jwt存入redis
 	if err := utils.SetRedisJwt(token, username); err != nil {
+		fmt.Println(err)
 		return nil, "", errors.New(" 设置登录状态失败! ")
 	}
+	// 将username存入redis
 
 	return user, token, nil
 }
@@ -57,6 +59,7 @@ func (UserService) Logout() {
 
 	// 删除redis中token
 	fmt.Println("退出登录了")
+
 }
 
 func (UserService) CreateUser(u model.User) error {

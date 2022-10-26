@@ -11,5 +11,4 @@ func SetRedisJwt(jwt string, username string) (err error) {
 	time := time.Duration(global.Config.Jwt.ExpiresTime) * time.Second
 	err = global.Redis.Set(context.Background(), username, jwt, time).Err()
 	return err
-
 }

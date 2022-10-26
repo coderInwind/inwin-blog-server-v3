@@ -52,7 +52,6 @@ func (UserApi) Login(c *gin.Context) {
 func (UserApi) Logout(c *gin.Context) {
 	res := response.NewResponse(c)
 	service.ServiceGroupApp.UserService.Logout()
-
 	res.OkWithMsg()
 }
 

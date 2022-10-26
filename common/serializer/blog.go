@@ -39,7 +39,7 @@ import (
 //	}
 //}
 
-func BuildCreateBlogParams(params request.CreateBlog) model.Blog {
+func BuildCreateBlogParams(params request.CreateBlog, id uint) model.Blog {
 	var tagsSlice []model.Tag
 
 	for _, value := range params.Tags {
@@ -53,6 +53,7 @@ func BuildCreateBlogParams(params request.CreateBlog) model.Blog {
 		Src:        params.Src,
 		Tags:       tagsSlice,
 		Overview:   params.Overview,
+		AuthorId:   id,
 	}
 }
 
