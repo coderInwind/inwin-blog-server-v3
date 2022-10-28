@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"inwind-blog-server-v3/common/errcode"
 	"inwind-blog-server-v3/common/response"
@@ -24,13 +23,14 @@ func JWTAuth() gin.HandlerFunc {
 		jwt := utils.NewJWT()
 		claims := jwt.ParseToken(token)
 
-		// 将用户信息传入上下文
+		// 将jwt信息传入上下文
 		c.Set("claims", claims)
 
 		//查询用户的权限等级
 		user := model.User{}
 		global.DB.Preload("Role").Find(&user)
-		fmt.Println(user)
+		// 将权限等级传入
+		c.Set("power", user.Role.Power)
 		c.Next()
 	}
 

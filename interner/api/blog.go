@@ -21,14 +21,33 @@ func (b *BlogApi) GetBlogList(c *gin.Context) {
 		return
 	}
 
-	list, total, err := service.ServiceGroupApp.GetBlogList(params)
-	//查询
-	if err != nil {
-		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
-		return
+	//判断当前用户的权限等级
+	power, exists := c.Get("power")
+	if !exists {
+		res.FailWithMsg(errcode.ServerError)
+	}
+	// 超管和次管
+	if power.(int) >= 9 {
+		list, total, err := service.ServiceGroupApp.GetBlogList(params)
+		//查询
+		if err != nil {
+			res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
+			return
+		}
+
+		res.OkWithList(list, total)
+	} else {
+		list, total, err := service.ServiceGroupApp.GetOwnBlogList(params)
+		//查询
+		if err != nil {
+			res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
+			return
+		}
+
+		res.OkWithList(list, total)
+
 	}
 
-	res.OkWithList(list, total)
 }
 
 func (b *BlogApi) GetBlogDetail(c *gin.Context) {

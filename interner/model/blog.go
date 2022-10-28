@@ -11,4 +11,5 @@ type Blog struct {
 	Like     int    `form:"like" json:"like"`
 	Hidden   int    `json:"hidden"`
 	AuthorId uint   `form:"authorId" json:"authorId"`
+	Author   User   `json:"author" form:"author"`
 }
