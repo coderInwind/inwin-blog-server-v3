@@ -7,6 +7,8 @@ type ApiGroup struct {
 	GalleryApi
 	UploadApi
 	bannerApi
+	MenuApi
+	RoleApi
 }
 
 var ApiGroupApp = new(ApiGroup)

@@ -8,6 +8,7 @@ import (
 	"inwind-blog-server-v3/common/serializer"
 	"inwind-blog-server-v3/interner/service"
 	"inwind-blog-server-v3/utils"
+	"unicode/utf8"
 )
 
 type BlogApi struct{}
@@ -27,7 +28,7 @@ func (b *BlogApi) GetBlogList(c *gin.Context) {
 		res.FailWithMsg(errcode.ServerError)
 	}
 	// 超管和次管
-	if power.(int) >= 9 {
+	if power.(int) <= 2 {
 		list, total, err := service.ServiceGroupApp.GetBlogList(params)
 		//查询
 		if err != nil {
@@ -78,10 +79,22 @@ func (b *BlogApi) EditBlog(c *gin.Context) {
 		return
 	}
 
+	//查询当前已有字数
+	count, err := service.ServiceGroupApp.GetBlogContentCount(params.Id)
+	if err != nil {
+		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
+		return
+	}
+
 	if err := service.ServiceGroupApp.EditBlog(params); err != nil {
 		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
 		return
 	}
+
+	// 记录字数
+	currentCount := utf8.RuneCountInString(params.Content) - count
+
+	service.ServiceGroupApp.CreateSubmitRecord(currentCount)
 
 	res.Ok()
 }
@@ -104,12 +117,14 @@ func (b *BlogApi) CreateBlog(c *gin.Context) {
 	// 序列化参数
 	clearedParams := serializer.BuildCreateBlogParams(params, id)
 
+	// 创建
 	id, err := service.ServiceGroupApp.CreateBlog(clearedParams)
 	if err != nil {
 		res.FailWithMsg(errcode.ServerError.WithDetail(err.Error()))
 		return
 	}
-
+	// 记录字数
+	service.ServiceGroupApp.CreateSubmitRecord(utf8.RuneCountInString(clearedParams.Content))
 	res.OkWithData(id)
 }
 

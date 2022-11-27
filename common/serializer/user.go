@@ -24,7 +24,7 @@ func BuildUser(item model.User) User {
 		Id:        item.Id,
 		Username:  item.Username,
 		Password:  item.Password,
-		Role:      item.Role.Role,
+		Role:      item.Role.Name,
 		CreatedAt: item.BasicModel.CreatedAt,
 		UpdatedAt: item.BasicModel.UpdatedAt,
 	}
@@ -36,11 +36,4 @@ func BuildUsers(list []model.User) (users []User) {
 		users = append(users, user)
 	}
 	return users
-}
-
-func BuildLogin(user *model.User, token string) Login {
-	return Login{
-		Username: user.Username,
-		Token:    token,
-	}
 }

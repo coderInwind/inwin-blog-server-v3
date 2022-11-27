@@ -8,6 +8,7 @@ import (
 	"inwind-blog-server-v3/common/serializer"
 	"inwind-blog-server-v3/interner/model"
 	"inwind-blog-server-v3/interner/service"
+	"inwind-blog-server-v3/utils"
 )
 
 type UserApi struct{}
@@ -39,14 +40,14 @@ func (UserApi) Login(c *gin.Context) {
 		return
 	}
 
-	user, token, err := service.ServiceGroupApp.UserService.Login(params)
+	token, err := service.ServiceGroupApp.UserService.Login(params)
 
 	if err != nil {
 		res.FailWithMsg(errcode.UsernameOrPasswordError.WithDetail(err.Error()))
 		return
 	}
 
-	res.OkWithData(serializer.BuildLogin(user, token))
+	res.OkWithData(token)
 }
 
 func (UserApi) Logout(c *gin.Context) {
@@ -71,4 +72,28 @@ func (UserApi) CreateUser(c *gin.Context) {
 	}
 
 	res.OkWithMsg()
+}
+
+func (UserApi) GetInfo(c *gin.Context) {
+	var req request.GetInfoRequest
+	res := response.NewResponse(c)
+	if err := c.ShouldBind(&req); err != nil {
+		res.FailWithMsg(errcode.InvalidParams.WithDetail(err.Error()))
+		return
+	}
+
+	jwt := utils.NewJWT()
+	id := jwt.ParseToken(req.Token).Id
+
+	info, err := service.ServiceGroupApp.GetUserById(id)
+	if err != nil {
+		res.FailWithMsg(errcode.InvalidParams.WithDetail(err.Error()))
+	}
+	// 整理
+	var resInfo = make(map[string]interface{})
+	resInfo["power"] = info.Role.Power
+	resInfo["username"] = info.Username
+	resInfo["role"] = info.Role.Name
+
+	res.OkWithData(resInfo)
 }

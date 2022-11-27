@@ -7,6 +7,7 @@ import (
 	"inwind-blog-server-v3/interner/model"
 	"inwind-blog-server-v3/utils/dto"
 	"time"
+	"unicode/utf8"
 )
 
 type BlogService struct{}
@@ -90,4 +91,10 @@ func (b *BlogService) CreateBlog(blog model.Blog) (uint, error) {
 func (b *BlogService) DeleteBlog(id uint) error {
 	err := global.DB.Select(clause.Associations).Delete(&model.Blog{BasicModel: model.BasicModel{Id: id}}).Error
 	return err
+}
+
+func (b *BlogService) GetBlogContentCount(id uint) (int, error) {
+	blog := model.Blog{}
+	err := global.DB.Select("content").First(&blog, id).Error
+	return utf8.RuneCountInString(blog.Content), err
 }

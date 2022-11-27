@@ -28,7 +28,9 @@ func Routers() *gin.Engine {
 		router.InitGalleryRouter(PrivateGroup)
 		router.InitUploadRouter(PrivateGroup)
 		router.InitCoverRouter(PrivateGroup)
-		//router.InitSubmitRecord(PrivateGroup)
+		router.InitSubmitRecord(PrivateGroup)
+		router.InitMenuRouter(PrivateGroup)
+		router.InitRoleRouter(PrivateGroup)
 	}
 
 	return r

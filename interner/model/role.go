@@ -2,6 +2,6 @@ package model
 
 type Role struct {
 	BasicModel
-	Role  string `json:"role"`
+	Name  string `json:"name"`
 	Power int    `json:"power"`
 }

@@ -14,5 +14,7 @@ func InitUserRouter(router *gin.RouterGroup) {
 		userRouter.POST("/create", userApi.CreateUser)
 
 		userRouter.GET("/logout", userApi.Logout)
+
+		userRouter.GET("/info", userApi.GetInfo)
 	}
 }

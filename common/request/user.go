@@ -10,3 +10,7 @@ type CreateRequest struct {
 	Password string `json:"password" form:"password" binding:"required"`
 	RoleId   int    `json:"role" form:"role"`
 }
+
+type GetInfoRequest struct {
+	Token string `json:"token" form:"token" binding:"required"`
+}

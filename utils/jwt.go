@@ -12,8 +12,7 @@ type JWT struct {
 }
 
 type Claims struct {
-	Id       uint   `json:"id"`
-	Username string `json:"username"`
+	Id uint `json:"id"`
 	jwt.RegisteredClaims
 }
 
@@ -24,12 +23,11 @@ func NewJWT() *JWT {
 	}
 }
 
-func (j *JWT) CreateClaims(id uint, username string) Claims {
+func (j *JWT) CreateClaims(id uint) Claims {
 	jwtCfg := global.Config.Jwt
 
 	claim := Claims{
-		Id:       id,
-		Username: username,
+		Id: id,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer: jwtCfg.SigningKey,
 			// 设置和jwt一样的生效时间
@@ -55,7 +53,7 @@ func (j *JWT) ParseToken(tokenString string) *Claims {
 	})
 
 	if err != nil {
-		fmt.Println("错误了")
+		fmt.Println("错误了", err)
 	}
 
 	return token.Claims.(*Claims)

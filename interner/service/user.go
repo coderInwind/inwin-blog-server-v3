@@ -22,37 +22,36 @@ func (UserService) GetUserList(params request.PageRequest) (users []model.User, 
 	return users, total, err
 }
 
-func (UserService) Login(params request.LoginRequest) (*model.User, string, error) {
+func (UserService) Login(params request.LoginRequest) (string, error) {
 	username, password := params.Username, params.Password
 
 	user := &model.User{}
 	err := global.DB.Where("username = ?", username).First(&user).Error
 
 	if err != nil {
-		return nil, "", err
+		return "", err
 	}
 
 	// 将密码和数据库加密了的密码进行比对
 	if ok := utils.BcryptCheck(password, user.Password); !ok {
-		return nil, "", errors.New("the user name or password is incorrect")
+		return "", errors.New("the user name or password is incorrect")
 	}
 
 	// 生成token
 	jwt := utils.NewJWT()
-	Claims := jwt.CreateClaims(user.Id, username)
+	Claims := jwt.CreateClaims(user.Id)
 	token, err := jwt.GenerateToken(Claims)
 	if err != nil {
-		return nil, "", errors.New("token generation error")
+		return "", errors.New("token generation error")
 	}
 
 	// 将jwt存入redis
 	if err := utils.SetRedisJwt(token, username); err != nil {
 		fmt.Println(err)
-		return nil, "", errors.New(" 设置登录状态失败! ")
+		return "", errors.New(" 设置登录状态失败! ")
 	}
-	// 将username存入redis
 
-	return user, token, nil
+	return token, nil
 }
 
 func (UserService) Logout() {
@@ -78,4 +77,11 @@ func (UserService) CreateUser(u model.User) error {
 	}
 
 	return nil
+}
+
+func (UserService) GetUserById(id uint) (model.User, error) {
+	var user model.User
+	err := global.DB.Where("id = ?", id).Preload("Role").First(&user).Error
+
+	return user, err
 }
